@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja" data-run-url="https://github.com/matujuri/tsurugamine-slot-checker/actions/workflows/check-availability.yml">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#2c5f9e">
+<title>鶴ヶ峰 技能教習の空き枠</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚗</text></svg>">
+<style>
+  :root {
+    --bg: #f4f5f7;  --card: #ffffff;  --text: #1b1f24;  --muted: #656d78;
+    --line: #e2e5ea; --accent: #2c5f9e; --accent-soft: #eaf1fa;
+    --open: #1f7a46;  --open-soft: #e7f5ec;
+    --warn: #9a5b00;  --warn-soft: #fdf3e2;
+    --sat: #1a4fd6;   --sun: #d32f2f;
+    --radius: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14171c;  --card: #1d2127;  --text: #e8eaed;  --muted: #9aa3ae;
+      --line: #2c323a; --accent: #6fa8e6; --accent-soft: #1b2a3d;
+      --open: #6ddc9b;  --open-soft: #16301f;
+      --warn: #f0b95c;  --warn-soft: #33270f;
+      --sat: #7aa6ff;   --sun: #ff8a80;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0 16px calc(32px + env(safe-area-inset-bottom));
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP",
+                 "Yu Gothic", Meiryo, sans-serif;
+    line-height: 1.6; -webkit-text-size-adjust: 100%;
+  }
+  .wrap { max-width: 640px; margin: 0 auto; }
+  header { padding: 28px 0 16px; }
+  h1 { margin: 0; font-size: 1.35rem; letter-spacing: .01em; }
+  .sub { color: var(--muted); font-size: .85rem; margin-top: 4px; }
+
+  .status { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+            margin-top: 14px; }
+  .ago { font-size: 1.05rem; font-weight: 600; }
+  .abs { color: var(--muted); font-size: .85rem; }
+
+  .banner { margin-top: 14px; padding: 12px 14px; border-radius: var(--radius);
+            background: var(--warn-soft); color: var(--warn); font-size: .9rem;
+            border: 1px solid color-mix(in srgb, var(--warn) 25%, transparent); }
+  .banner.hidden { display: none; }
+
+  section { margin-top: 26px; }
+  h2 { font-size: .8rem; margin: 0 0 10px; color: var(--muted);
+       font-weight: 600; letter-spacing: .08em; }
+
+  .card { background: var(--card); border: 1px solid var(--line);
+          border-radius: var(--radius); overflow: hidden; }
+  .slot { display: flex; align-items: center; gap: 14px; padding: 14px 16px;
+          border-bottom: 1px solid var(--line); }
+  .slot:last-child { border-bottom: 0; }
+  .slot .date { font-variant-numeric: tabular-nums; font-weight: 600;
+                min-width: 5.6em; }
+  .slot .wd { font-weight: 600; }
+  .wd.sat { color: var(--sat); } .wd.sun { color: var(--sun); }
+  .slot .period { color: var(--muted); font-size: .9rem; min-width: 4.2em;
+                  white-space: nowrap; }
+  .slot .time { margin-left: auto; font-variant-numeric: tabular-nums;
+                background: var(--open-soft); color: var(--open);
+                padding: 3px 10px; border-radius: 999px; font-size: .85rem;
+                font-weight: 600; white-space: nowrap; }
+  /* 前回から増えた枠。狭い画面で折り返さないよう、文字バッジではなく行を色づける */
+  .slot.is-new { background: var(--open-soft); box-shadow: inset 3px 0 0 var(--open); }
+  .legend { margin: 8px 2px 0; font-size: .78rem; color: var(--muted); }
+  .legend.hidden { display: none; }
+  .legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px;
+              background: var(--open); margin-right: 5px; vertical-align: .02em; }
+
+  .empty { padding: 22px 16px; color: var(--muted); text-align: center;
+           font-size: .92rem; }
+
+  .actions { margin-top: 26px; display: grid; gap: 10px; }
+  a.btn { display: block; text-align: center; padding: 14px; border-radius: var(--radius);
+          text-decoration: none; font-weight: 600; font-size: .95rem; }
+  a.primary { background: var(--accent); color: #fff; }
+  a.secondary { background: var(--accent-soft); color: var(--accent);
+                border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent); }
+
+  footer { margin-top: 28px; color: var(--muted); font-size: .78rem; text-align: center; }
+  code { font-size: .85em; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>🚗 鶴ヶ峰 技能教習の空き枠</h1>
+    <div class="sub" id="scope">AT場内</div>
+    <div class="status">
+      <span class="ago" id="ago">読み込み中…</span>
+      <span class="abs" id="abs"></span>
+    </div>
+    <div class="banner hidden" id="stale"></div>
+  </header>
+
+  <section>
+    <h2>土日（終日）</h2>
+    <div class="card" id="weekend"></div>
+  </section>
+
+  <section>
+    <h2 id="eveningTitle">平日（夜）</h2>
+    <div class="card" id="weekday"></div>
+  </section>
+
+  <p class="legend hidden" id="legend"><i></i>前回の確認から増えた枠</p>
+
+  <div class="actions">
+    <a class="btn primary" id="booking" href="#" rel="noopener">予約ページを開く</a>
+    <a class="btn secondary" id="refresh" href="#" rel="noopener">最新に更新する（実行ボタン）</a>
+  </div>
+
+  <footer id="footer"></footer>
+
+</div>
+
+<script>
+(function () {
+  const $ = (id) => document.getElementById(id);
+  const WD_CLASS = { "土": "sat", "日": "sun" };
+
+  function fmtDate(iso) {
+    const [, m, d] = iso.split("-");
+    return `${Number(m)}/${d}`;
+  }
+
+  function ago(from, now) {
+    const min = Math.floor((now - from) / 60000);
+    if (min < 1) return "たった今";
+    if (min < 60) return `${min}分前`;
+    const h = Math.floor(min / 60);
+    if (h < 24) return `${h}時間前`;
+    return `${Math.floor(h / 24)}日前`;
+  }
+
+  function slotRow(s, isNew) {
+    const wd = WD_CLASS[s.weekday] || "";
+    return `<div class="slot${isNew ? " is-new" : ""}">
+      <span class="date">${fmtDate(s.date)}</span>
+      <span class="wd ${wd}">${s.weekday}</span>
+      <span class="period">${s.label}</span>
+      <span class="time">${s.time || "—"}</span>
+    </div>`;
+  }
+
+  function fill(el, rows, emptyText, changedKeys) {
+    el.innerHTML = rows.length
+      ? rows.map((s) => slotRow(s, changedKeys.has(`${s.date}|${s.label}`))).join("")
+      : `<div class="empty">${emptyText}</div>`;
+  }
+
+  function render(data) {
+    const now = new Date();
+    const gen = new Date(data.generated_at);
+
+    $("ago").textContent = ago(gen, now);
+    $("abs").textContent = gen.toLocaleString("ja-JP", {
+      month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }) + " 時点";
+
+    // 手動実行なので、古いときははっきり出す
+    const hours = (now - gen) / 3600000;
+    if (hours >= 3) {
+      const b = $("stale");
+      b.textContent = `この内容は${ago(gen, now)}のものです。下の「最新に更新する」を押すと取り直せます。`;
+      b.classList.remove("hidden");
+    }
+
+    const sc = data.scope || {};
+    const from = sc.evening_from || "18:00";
+    $("scope").textContent =
+      `AT場内 ／ ${(sc.all_day || []).join("・")} は終日、`
+      + `${(sc.evening || []).join("・")} は ${from} 以降`;
+    $("eveningTitle").textContent = `平日（${from} 以降）`;
+
+    const changed = new Set((data.changed || []).map((c) => `${c.date}|${c.label}`));
+    const open = data.open || [];
+    fill($("weekend"), open.filter((s) => s.mode === "all"), "空きなし", changed);
+    fill($("weekday"), open.filter((s) => s.mode !== "all"),
+         `${from} 以降の空きなし`, changed);
+
+    const anyNew = open.some((s) => changed.has(`${s.date}|${s.label}`));
+    $("legend").classList.toggle("hidden", !anyNew);
+
+    $("booking").href = data.booking_url || "#";
+
+    const r = data.range;
+    $("footer").textContent = r
+      ? `${data.weeks}週間分（${r.from} 〜 ${r.to}）／ ${data.days_checked}日を確認`
+      : "確認できた日がありません";
+  }
+
+  function fail(msg) {
+    $("ago").textContent = "—";
+    $("stale").textContent = msg;
+    $("stale").classList.remove("hidden");
+    $("weekend").innerHTML = '<div class="empty">—</div>';
+    $("weekday").innerHTML = '<div class="empty">—</div>';
+  }
+
+  // 実行ボタンのリンク先はビルド時に埋め込む
+  const RUN_URL = document.documentElement.dataset.runUrl || "";
+  if (RUN_URL) $("refresh").href = RUN_URL;
+  else $("refresh").style.display = "none";
+
+  fetch("data.json?t=" + Date.now())
+    .then((r) => (r.ok ? r.json() : Promise.reject(new Error("HTTP " + r.status))))
+    .then(render)
+    .catch(() => fail("まだ一度も結果が公開されていません。実行ボタンを押すとここに表示されます。"));
+})();
+</script>
+</body>
+</html>

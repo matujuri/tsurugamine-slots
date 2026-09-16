@@ -1,0 +1,9 @@
+{
+  "generated_at": null,
+  "open": [],
+  "changed": [],
+  "days_checked": 0,
+  "range": null,
+  "scope": {"all_day": ["土", "日"], "evening": ["月", "火", "水", "木", "金"], "evening_from": "18:00"},
+  "booking_url": "https://tsurugamine-ds.obic7.obicnet.ne.jp/"
+}
