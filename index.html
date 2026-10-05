@@ -55,15 +55,19 @@
 
   .card { background: var(--card); border: 1px solid var(--line);
           border-radius: var(--radius); overflow: hidden; }
-  .slot { display: flex; align-items: center; gap: 14px; padding: 14px 16px;
+  .slot { display: flex; align-items: center; gap: 10px; padding: 14px 16px;
           border-bottom: 1px solid var(--line); }
   .slot:last-child { border-bottom: 0; }
   .slot .date { font-variant-numeric: tabular-nums; font-weight: 600;
-                min-width: 5.6em; }
-  .slot .wd { font-weight: 600; }
+                min-width: 5.2em; flex-shrink: 0; }
+  /* 「月 祝」が2行に折り返さないようにする */
+  .slot .wd { font-weight: 600; white-space: nowrap; flex-shrink: 0; }
   .wd.sat { color: var(--sat); } .wd.sun { color: var(--sun); }
-  .slot .period { color: var(--muted); font-size: .9rem; min-width: 4.2em;
-                  white-space: nowrap; }
+  .hol { display: inline-block; margin-left: 4px; font-size: .62rem; font-weight: 700;
+         color: var(--sun); border: 1px solid currentColor; border-radius: 3px;
+         padding: 0 2px; vertical-align: .18em; line-height: 1.35; }
+  .slot .period { color: var(--muted); font-size: .9rem; min-width: 4em;
+                  white-space: nowrap; flex-shrink: 0; }
   .slot .time { margin-left: auto; font-variant-numeric: tabular-nums;
                 background: var(--open-soft); color: var(--open);
                 padding: 3px 10px; border-radius: 999px; font-size: .85rem;
@@ -103,7 +107,7 @@
   </header>
 
   <section>
-    <h2>土日（終日）</h2>
+    <h2 id="holidayTitle">休日（終日）</h2>
     <div class="card" id="weekend"></div>
   </section>
 
@@ -116,7 +120,7 @@
 
   <div class="actions">
     <a class="btn primary" id="booking" href="#" rel="noopener">予約ページを開く</a>
-    <a class="btn secondary" id="refresh" href="#" rel="noopener">最新に更新する（実行ボタン）</a>
+    <a class="btn secondary" id="refresh" href="#" rel="noopener">今すぐ確認する</a>
   </div>
 
   <footer id="footer"></footer>
@@ -144,9 +148,10 @@
 
   function slotRow(s, isNew) {
     const wd = WD_CLASS[s.weekday] || "";
+    const hol = s.holiday ? `<span class="hol" title="${s.holiday}">祝</span>` : "";
     return `<div class="slot${isNew ? " is-new" : ""}">
       <span class="date">${fmtDate(s.date)}</span>
-      <span class="wd ${wd}">${s.weekday}</span>
+      <span class="wd ${wd}">${s.weekday}${hol}</span>
       <span class="period">${s.label}</span>
       <span class="time">${s.time || "—"}</span>
     </div>`;
@@ -166,19 +171,22 @@
     $("abs").textContent = gen.toLocaleString("ja-JP", {
       month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }) + " 時点";
 
-    // 手動実行なので、古いときははっきり出す
-    const hours = (now - gen) / 3600000;
-    if (hours >= 3) {
+    // 30分おきに更新されるので、1時間半以上空いていれば何か止まっている
+    const mins = (now - gen) / 60000;
+    if (mins >= 90) {
       const b = $("stale");
-      b.textContent = `この内容は${ago(gen, now)}のものです。下の「最新に更新する」を押すと取り直せます。`;
+      b.textContent = `最後の確認から${ago(gen, now)}経っています。`
+        + `通常は30分おきに更新されます。下の「今すぐ確認する」を押すか、実行が止まっていないか確認してください。`;
       b.classList.remove("hidden");
     }
 
     const sc = data.scope || {};
     const from = sc.evening_from || "18:00";
+    const holiday = sc.holidays_as_weekend !== false;
+    const allDay = (sc.all_day || []).join("・") + (holiday ? "・祝日" : "");
     $("scope").textContent =
-      `AT場内 ／ ${(sc.all_day || []).join("・")} は終日、`
-      + `${(sc.evening || []).join("・")} は ${from} 以降`;
+      `AT場内 ／ ${allDay} は終日、${(sc.evening || []).join("・")} は ${from} 以降`;
+    $("holidayTitle").textContent = holiday ? "休日（土日・祝日／終日）" : "土日（終日）";
     $("eveningTitle").textContent = `平日（${from} 以降）`;
 
     const changed = new Set((data.changed || []).map((c) => `${c.date}|${c.label}`));
@@ -194,7 +202,8 @@
 
     const r = data.range;
     $("footer").textContent = r
-      ? `${data.weeks}週間分（${r.from} 〜 ${r.to}）／ ${data.days_checked}日を確認`
+      ? `${data.weeks === 2 ? "今週と来週" : data.weeks + "週間分"}`
+        + `（${r.from} 〜 ${r.to}）／ ${data.days_checked}日を確認　30分おきに自動更新`
       : "確認できた日がありません";
   }
 

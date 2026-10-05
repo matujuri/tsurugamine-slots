@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-09-23T18:01:35+09:00",
-  "weeks": 9,
+  "generated_at": "2026-10-05T15:33:18+09:00",
+  "weeks": 2,
   "range": {
-    "from": "2026-09-23",
-    "to": "2026-11-24"
+    "from": "2026-10-06",
+    "to": "2026-10-19"
   },
-  "days_checked": 63,
+  "days_checked": 14,
   "scope": {
     "all_day": [
       "土",
@@ -18,7 +18,8 @@
       "木",
       "金"
     ],
-    "evening_from": "18:00"
+    "evening_from": "18:00",
+    "holidays_as_weekend": true
   },
   "open": [],
   "changed": [],
