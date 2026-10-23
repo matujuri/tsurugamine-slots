@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-23T16:01:28+09:00",
+  "generated_at": "2026-10-23T16:31:12+09:00",
   "weeks": 2,
   "range": {
     "from": "2026-10-23",
@@ -27,46 +27,24 @@
       "weekday": "土",
       "mode": "all",
       "holiday": "",
-      "label": "04時限",
-      "time": "11:00～11:50"
-    },
-    {
-      "date": "2026-10-24",
-      "weekday": "土",
-      "mode": "all",
-      "holiday": "",
-      "label": "05時限",
-      "time": "12:50～13:40"
-    },
-    {
-      "date": "2026-10-24",
-      "weekday": "土",
-      "mode": "all",
-      "holiday": "",
       "label": "07時限",
       "time": "14:50～15:40"
+    },
+    {
+      "date": "2026-11-01",
+      "weekday": "日",
+      "mode": "all",
+      "holiday": "",
+      "label": "08時限",
+      "time": "15:50～16:40"
     }
   ],
   "changed": [
     {
-      "date": "2026-10-24",
-      "weekday": "土",
-      "label": "04時限",
-      "time": "11:00～11:50",
-      "holiday": ""
-    },
-    {
-      "date": "2026-10-24",
-      "weekday": "土",
-      "label": "05時限",
-      "time": "12:50～13:40",
-      "holiday": ""
-    },
-    {
-      "date": "2026-10-24",
-      "weekday": "土",
-      "label": "07時限",
-      "time": "14:50～15:40",
+      "date": "2026-11-01",
+      "weekday": "日",
+      "label": "08時限",
+      "time": "15:50～16:40",
       "holiday": ""
     }
   ],
