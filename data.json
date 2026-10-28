@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-10-28T18:31:12+09:00",
+  "generated_at": "2026-10-28T19:01:22+09:00",
   "weeks": 2,
   "range": {
-    "from": "2026-10-28",
-    "to": "2026-11-10"
+    "from": "2026-10-29",
+    "to": "2026-11-11"
   },
   "days_checked": 14,
   "scope": {
@@ -35,16 +35,16 @@
       "weekday": "日",
       "mode": "all",
       "holiday": "",
-      "label": "03時限",
-      "time": "10:00～10:50"
+      "label": "07時限",
+      "time": "14:50～15:40"
     },
     {
       "date": "2026-11-01",
       "weekday": "日",
       "mode": "all",
       "holiday": "",
-      "label": "07時限",
-      "time": "14:50～15:40"
+      "label": "08時限",
+      "time": "15:50～16:40"
     },
     {
       "date": "2026-11-03",
@@ -57,32 +57,11 @@
   ],
   "changed": [
     {
-      "date": "2026-10-30",
-      "weekday": "金",
-      "label": "10時限",
-      "time": "18:00～18:50",
-      "holiday": ""
-    },
-    {
       "date": "2026-11-01",
       "weekday": "日",
-      "label": "03時限",
-      "time": "10:00～10:50",
+      "label": "08時限",
+      "time": "15:50～16:40",
       "holiday": ""
-    },
-    {
-      "date": "2026-11-01",
-      "weekday": "日",
-      "label": "07時限",
-      "time": "14:50～15:40",
-      "holiday": ""
-    },
-    {
-      "date": "2026-11-03",
-      "weekday": "火",
-      "label": "03時限",
-      "time": "10:00～10:50",
-      "holiday": "文化の日"
     }
   ],
   "booking_url": "https://tsurugamine-ds.obic7.obicnet.ne.jp/"
