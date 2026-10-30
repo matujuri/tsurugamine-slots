@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-30T19:01:13+09:00",
+  "generated_at": "2026-10-30T19:31:12+09:00",
   "weeks": 2,
   "range": {
     "from": "2026-10-30",
@@ -21,7 +21,39 @@
     "evening_from": "18:00",
     "holidays_as_weekend": true
   },
-  "open": [],
-  "changed": [],
+  "open": [
+    {
+      "date": "2026-10-31",
+      "weekday": "土",
+      "mode": "all",
+      "holiday": "",
+      "label": "04時限",
+      "time": "11:00～11:50"
+    },
+    {
+      "date": "2026-11-01",
+      "weekday": "日",
+      "mode": "all",
+      "holiday": "",
+      "label": "06時限",
+      "time": "13:50～14:40"
+    }
+  ],
+  "changed": [
+    {
+      "date": "2026-10-31",
+      "weekday": "土",
+      "label": "04時限",
+      "time": "11:00～11:50",
+      "holiday": ""
+    },
+    {
+      "date": "2026-11-01",
+      "weekday": "日",
+      "label": "06時限",
+      "time": "13:50～14:40",
+      "holiday": ""
+    }
+  ],
   "booking_url": "https://tsurugamine-ds.obic7.obicnet.ne.jp/"
 }
