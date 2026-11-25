@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-11-25T18:31:10+09:00",
+  "generated_at": "2026-11-25T19:01:12+09:00",
   "weeks": 2,
   "range": {
-    "from": "2026-11-25",
-    "to": "2026-12-08"
+    "from": "2026-11-26",
+    "to": "2026-12-09"
   },
   "days_checked": 14,
   "scope": {
@@ -23,8 +23,16 @@
   },
   "open": [
     {
-      "date": "2026-11-26",
-      "weekday": "木",
+      "date": "2026-11-27",
+      "weekday": "金",
+      "mode": "evening",
+      "holiday": "",
+      "label": "11時限",
+      "time": "19:00～19:50"
+    },
+    {
+      "date": "2026-12-01",
+      "weekday": "火",
       "mode": "evening",
       "holiday": "",
       "label": "10時限",
@@ -33,8 +41,15 @@
   ],
   "changed": [
     {
-      "date": "2026-11-26",
-      "weekday": "木",
+      "date": "2026-11-27",
+      "weekday": "金",
+      "label": "11時限",
+      "time": "19:00～19:50",
+      "holiday": ""
+    },
+    {
+      "date": "2026-12-01",
+      "weekday": "火",
       "label": "10時限",
       "time": "18:00～18:50",
       "holiday": ""
